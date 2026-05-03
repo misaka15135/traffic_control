@@ -63,8 +63,4 @@ python main.py
 - 可视化改进：显示速度、ID、队列长度统计，增加暂停/单步功能。
 - 性能：在车辆非常多时，改用更高效的数据结构或引入 asyncio 版本以降低线程开销。
 
-许可证 & 致谢
 
-本示例代码用于教育与演示目的。
-
-Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>
