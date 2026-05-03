@@ -2,7 +2,7 @@
 
 
 a = Analysis(
-    ['main.py'],
+    ['D:\\TongJi_Bache\\SpringFor2025\\opeeratingSystem\\project_1\\main.py'],
     pathex=[],
     binaries=[],
     datas=[],
@@ -29,7 +29,7 @@ exe = EXE(
     upx=True,
     upx_exclude=[],
     runtime_tmpdir=None,
-    console=False,
+    console=True,
     disable_windowed_traceback=False,
     argv_emulation=False,
     target_arch=None,

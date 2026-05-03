@@ -55,30 +55,26 @@ class TrafficGUI:
         self.canvas.create_oval(315, 370, 330, 385, fill=sn_color, tags="dynamic") # 南路口
 
         # 2. 绘制排队等候的车辆（使用方块表示）
-        # 西向东排队 (从左往右开，停在左侧)
-        special_vehicles = list(traffic_logic.queues["西"]["special"].queue)
-        ordinary_vehicles = list(traffic_logic.queues["西"]["ordinary"].queue)
-        all_vehicles = special_vehicles + ordinary_vehicles
-        for idx, v in enumerate(all_vehicles):
-            self.draw_vehicle_block(v, 200 - idx*35, 310)
-        # 东向西排队 (从右往左开，停在右侧)
-        special_vehicles = list(traffic_logic.queues["东"]["special"].queue)
-        ordinary_vehicles = list(traffic_logic.queues["东"]["ordinary"].queue)
-        all_vehicles = special_vehicles + ordinary_vehicles
-        for idx, v in enumerate(all_vehicles):
-            self.draw_vehicle_block(v, 370 + idx*35, 250)
-        # 北向南排队 (从上往下开，停在上侧)
-        special_vehicles = list(traffic_logic.queues["北"]["special"].queue)
-        ordinary_vehicles = list(traffic_logic.queues["北"]["ordinary"].queue)
-        all_vehicles = special_vehicles + ordinary_vehicles
-        for idx, v in enumerate(all_vehicles):
-            self.draw_vehicle_block(v, 250, 200 - idx*35)
-        # 南向北排队 (从下往上开，停在下侧)
-        special_vehicles = list(traffic_logic.queues["南"]["special"].queue)
-        ordinary_vehicles = list(traffic_logic.queues["南"]["ordinary"].queue)
-        all_vehicles = special_vehicles + ordinary_vehicles
-        for idx, v in enumerate(all_vehicles):
-            self.draw_vehicle_block(v, 310, 370 + idx*35)
+        # 单一队列：按队列顺序渲染，特权车在队列中间会被标记为 S
+        def render_direction(dir_key, base_x, base_y, step, horizontal=True):
+            q_list = list(traffic_logic.queues[dir_key].queue)
+            for idx, v in enumerate(q_list):
+                if horizontal:
+                    x = base_x + idx * step
+                    y = base_y
+                else:
+                    x = base_x
+                    y = base_y + idx * step
+                self.draw_vehicle_block(v, x, y)
+
+        # 西向东（左到右），base_x=200, step=-35
+        render_direction("西", 200, 310, -35, horizontal=True)
+        # 东向西（右到左），base_x=370, step=35
+        render_direction("东", 370, 250, 35, horizontal=True)
+        # 北向南（上到下），base_y=200, step=-35
+        render_direction("北", 250, 200, -35, horizontal=False)
+        # 南向北（下到上），base_y=370, step=35
+        render_direction("南", 310, 370, 35, horizontal=False)
 
         # 3. 绘制正在路口中行驶的车辆（平滑动画）
         current_time = time.time()
